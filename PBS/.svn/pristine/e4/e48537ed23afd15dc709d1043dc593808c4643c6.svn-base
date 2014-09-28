@@ -1,0 +1,15 @@
+package com.pbs.sport;
+
+import javax.persistence.Table;
+
+
+
+@Table(name="game")
+public class Match extends SportItem {
+	
+	
+	
+	public static void main(String[] args) {
+		System.out.println("asd");
+	}
+}

@@ -1,0 +1,58 @@
+package com.pbs.sport;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import com.pbs.sql.EmptyResultException;
+import com.pbs.sql.HibernateUtil;
+
+@Entity
+@Table(name="country")
+public class Country {
+	
+	private String name;
+	private String abbreviation;
+	private int id;
+	
+	public Country() {
+		
+	}
+	
+	@Id
+	@GeneratedValue
+	public int getId() {
+		return this.id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	@Column(name="name", unique=true, nullable=false)
+	public String getName() {
+		return this.name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@Column(name="abbreviation", unique=true, nullable=false)
+	public String getAbbreviation() {
+		return this.abbreviation;
+	}
+	public void setAbbreviation(String abbreviation) {
+		this.abbreviation = abbreviation;
+	}
+	
+	public static Country search(String name) throws EmptyResultException {
+		Country country = (Country) HibernateUtil.executeQuery("from Country where name = '" + name + "'");
+		return country;
+	}
+	
+}

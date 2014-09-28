@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="PBS" default="resolve" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<property name="src" location="src" />
+	
+	<property name="classes" location="classes" />
+	<property name="jar-loc" location="jar" />
+	
+	<property name="jar-file" value="${jar-loc}/PBS.jar" />
+
+	<target name="resolve">
+		<ivy:retrieve />
+	</target>
+	<!--
+	<target name="compile" depends="resolve">
+		<mkdir dir="${classes}" />
+		<javac srcdir="${src}" destdir="${classes}" compiler="javac1.7" />
+	</target>
+	
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar-loc}"/>
+        <jar destfile="${jar-file}" basedir="${classes}">
+            <manifest>
+                <attribute name="Main-Class" value="com.pbs.sport.Match"/>
+            </manifest>
+        </jar>
+    </target>
+	
+	<target name="run" depends="jar">
+		<java jar="${jar-file}" fork="true"/>
+	</target>
+	-->
+</project>

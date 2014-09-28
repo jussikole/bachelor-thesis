@@ -1,0 +1,42 @@
+package com.pbs.test;
+
+import java.util.List;
+
+import com.pbs.sport.Country;
+import com.pbs.sport.League;
+import com.pbs.sport.Match;
+import com.pbs.sport.Season;
+import com.pbs.sport.Team;
+import com.pbs.sql.EmptyResultException;
+
+public class SelectTest {
+	public static void main(String[] args) {
+		try {
+		
+			Country country = Country.search("England");
+			System.out.println(country.getId() + " " + country.getName() + " " + country.getAbbreviation());
+			
+			League league = League.search(country, "Premier league");
+			System.out.println(league.getId() + " " + league.getCountry().getName() + " " + league.getName());
+			
+			Season season = Season.search(league, 2010);
+			System.out.println(season.getId() + " " + season.getLeague().getName() + " " + season.getYear());
+			
+			Team team1 = Team.search("West Ham");
+			System.out.println(team1.getId() + " " + team1.getName());
+			
+			Team team2 = Team.search("Aston Villa");
+			System.out.println(team2.getId() + " " + team2.getName());
+			
+			
+			List<Match> matches = Match.search(season, team1, team2);
+			for (Match m : matches) {
+				System.out.println(m.getId() + " " + m.getHomeTeam().getName() + " " + m.getAwayTeam().getName());
+			}
+		
+		} catch (EmptyResultException e) {
+			System.out.println("abort");
+		}
+		
+	}
+}

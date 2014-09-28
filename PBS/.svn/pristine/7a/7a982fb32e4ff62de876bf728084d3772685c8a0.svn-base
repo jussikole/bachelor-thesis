@@ -1,0 +1,26 @@
+package com.pbs.test;
+
+import com.pbs.sport.Country;
+import com.pbs.sport.League;
+import com.pbs.sport.Season;
+import com.pbs.sql.EmptyResultException;
+
+public class SelectTest {
+	public static void main(String[] args) {
+		try {
+		
+			Country country = Country.search("England");
+			System.out.println(country.getId() + " " + country.getName() + " " + country.getAbbreviation());
+			
+			League league = League.search(country, "Championship");
+			System.out.println(league.getId() + " " + league.getCountry().getName() + " " + league.getName());
+			
+			Season season = Season.search(league, 2010);
+			System.out.println(season.getId() + " " + season.getLeague().getName() + " " + season.getYear());
+		
+		} catch (EmptyResultException e) {
+			System.out.println("abort");
+		}
+		
+	}
+}

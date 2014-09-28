@@ -1,0 +1,21 @@
+package com.pbs.sport;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+public class Season extends SportItem {
+	private League league;
+	
+	public Season() {
+		
+	}
+	
+	@ManyToOne
+	@JoinColumn(name="league_id")
+	public League getLeague() {
+		return this.league;
+	}
+	public void setLeague(League league) {
+		this.league = league;
+	}
+}

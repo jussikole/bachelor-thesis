@@ -1,0 +1,28 @@
+package com.pbs.sport;
+
+import javax.persistence.Column;
+import javax.persistence.Table;
+
+@Table(name="country")
+public class Country extends SportItem {
+	
+	private String name;
+	
+	public Country(String name) {
+		this.name = name;
+	}
+	
+	public Country() {
+		
+	}
+	
+	@Column(name="name")
+	public String getName() {
+		return this.name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
+}

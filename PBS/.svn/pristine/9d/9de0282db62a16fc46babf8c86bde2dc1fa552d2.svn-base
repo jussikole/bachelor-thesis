@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="PBS" default="resolve" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<property name="src" location="src" />
+	<property name="target" location="target" />
+	<property name="lib" location="lib" />
+
+	<target name="resolve">
+		<ivy:retrieve />
+	</target>
+
+	<target name="compile">
+		<javac srcdir="${src}" destdir="${target}/classes" />
+	</target>
+</project>

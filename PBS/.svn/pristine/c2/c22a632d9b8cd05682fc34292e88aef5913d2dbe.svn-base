@@ -1,0 +1,61 @@
+package com.pbs.sport;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import com.pbs.sql.EmptyResultException;
+import com.pbs.sql.HibernateUtil;
+
+@Entity
+@Table(name="league")
+public class League {
+	private int id;
+	private Country country;
+	private String name;
+	
+	public League() {
+		
+	}
+	
+	@Id
+	@GeneratedValue
+	public int getId() {
+		return this.id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	@ManyToOne
+	@JoinColumn(name="country_id", nullable=false)
+	public Country getCountry() {
+		return this.country;
+	}
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+	
+	@Column(name="name", unique=true, nullable=false)
+	public String getName() {
+		return this.name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public static League search(Country country, String name) throws EmptyResultException {
+		Query query = HibernateUtil.createQuery("from League where country_id = :cid and name = :name");
+		query.setParameter("cid", country.getId());
+		query.setParameter("name", name);
+		return (League) HibernateUtil.executeQuery(query);
+	}
+}

@@ -1,0 +1,11 @@
+package com.pbs.sql;
+
+public class TooManyResultsException extends Exception {
+
+	private static final long serialVersionUID = -3137504796864556069L;
+	
+	public TooManyResultsException() {
+		
+	}
+
+}

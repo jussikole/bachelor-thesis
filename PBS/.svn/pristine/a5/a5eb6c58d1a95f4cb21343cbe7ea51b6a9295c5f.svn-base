@@ -1,0 +1,32 @@
+package com.pbs.sport;
+
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+public class League extends SportItem {
+	private Country country;
+	private String name;
+	
+	public League() {
+		
+	}
+	
+	@ManyToOne
+	@JoinColumn(name="country_id")
+	public Country getCountry() {
+		return this.country;
+	}
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+	
+	@Column(name="name")
+	public String getName() {
+		return this.name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+}

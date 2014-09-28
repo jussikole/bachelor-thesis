@@ -1,0 +1,55 @@
+package com.pbs.sql;
+
+import org.apache.log4j.Logger;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
+
+import com.pbs.sport.Country;
+
+public class HibernateUtil {
+	
+	private static final Logger log = Logger.getLogger(HibernateUtil.class);
+    
+	private static final SessionFactory sessionFactory;
+
+	static {
+		try {
+			// Create the SessionFactory from hibernate.cfg.xml
+			sessionFactory = new AnnotationConfiguration()
+				.configure()
+				.buildSessionFactory();
+		} catch (Throwable ex) {
+			// Make sure you log the exception, as it might be swallowed
+			System.err.println("Initial SessionFactory creation failed." + ex);
+			throw new ExceptionInInitializerError(ex);
+		}
+	}
+
+	public static SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+	
+	public static Query createQuery(String hql) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		return session.createQuery(hql);
+	}
+	
+	public static Object executeQuery(String hql) throws EmptyResultException {
+		return HibernateUtil.executeQuery(HibernateUtil.createQuery(hql));
+	}
+	
+	public static Object executeQuery(Query query) throws EmptyResultException {
+		Object result = query.uniqueResult();
+		if (result == null) {
+			log.error("Empty result: " + query.getQueryString());
+			throw new EmptyResultException(query);
+		}
+		return result;
+	}
+	
+}

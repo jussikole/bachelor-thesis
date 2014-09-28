@@ -1,0 +1,64 @@
+package com.pbs.sql;
+
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
+
+import com.pbs.sport.Country;
+
+public class HibernateUtil {
+	
+	private static final Logger log = Logger.getLogger(HibernateUtil.class);
+    
+	private static final SessionFactory sessionFactory;
+
+	static {
+		try {
+			// Create the SessionFactory from hibernate.cfg.xml
+			sessionFactory = new AnnotationConfiguration()
+				.configure()
+				.buildSessionFactory();
+		} catch (Throwable ex) {
+			// Make sure you log the exception, as it might be swallowed
+			System.err.println("Initial SessionFactory creation failed." + ex);
+			throw new ExceptionInInitializerError(ex);
+		}
+	}
+
+	public static SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+	
+	public static Query createQuery(String hql) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		return session.createQuery(hql);
+	}
+	
+	public static Object querySingleResult(String hql) throws EmptyResultException {
+		return HibernateUtil.querySingleResult(HibernateUtil.createQuery(hql));
+	}
+	
+	public static Object querySingleResult(Query query) throws EmptyResultException {
+		Object result = query.uniqueResult();
+		if (result == null) {
+			log.error("Empty result: " + query.getQueryString());
+			throw new EmptyResultException(query);
+		}
+		return result;
+	}
+	
+	public static <T> List<T> queryMultipleResult(Query query) {
+		@SuppressWarnings("unchecked")
+		List<T> results = query.list();
+		return results;
+	}
+	
+}

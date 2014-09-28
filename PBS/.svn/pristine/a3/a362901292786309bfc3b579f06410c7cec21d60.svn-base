@@ -1,0 +1,106 @@
+package com.pbs.sport;
+
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Vector;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.Query;
+
+import com.pbs.sql.HibernateUtil;
+
+
+@Entity
+@Table(name="game")
+public class Match {
+	private int id;
+	private Season season;
+	private Timestamp startTime;
+	
+	private Team homeTeam;
+	private Team awayTeam;
+	
+	
+	public Match() {
+		
+	}
+	
+	@Id
+	@GeneratedValue
+	public int getId() {
+		return this.id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	@Column(name="start_time", nullable=false)
+	public Timestamp getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(Timestamp startTime) {
+		this.startTime = startTime;
+	}
+
+	@ManyToOne
+	@JoinColumn(name="season_id", nullable=false)
+	public Season getSeason() {
+		return season;
+	}
+	public void setSeason(Season season) {
+		this.season = season;
+	}
+
+	@ManyToOne
+	@JoinColumn(name="home_team_id", nullable=false)
+	public Team getHomeTeam() {
+		return homeTeam;
+	}
+	public void setHomeTeam(Team homeTeam) {
+		this.homeTeam = homeTeam;
+	}
+
+	@ManyToOne
+	@JoinColumn(name="away_team_id", nullable=false)
+	public Team getAwayTeam() {
+		return awayTeam;
+	}
+	public void setAwayTeam(Team awayTeam) {
+		this.awayTeam = awayTeam;
+	}
+	
+	public static List<Match> search(List<Season> seasons, Team team) {
+		Query query = HibernateUtil.createQuery("from Match where season_id=:sid and (home_team_id=:tid or away_team_id=:tid)");
+		query.setParameter("sid", seasons.get(0).getId());
+		query.setParameter("tid", team.getId());
+		return HibernateUtil.queryMultipleResult(query);
+	}
+	
+	public static List<Match> search(Season season, Team team) {
+		List<Season> seasons = new Vector<Season>();
+		seasons.add(season);
+		return Match.search(seasons, team);
+	}
+	
+	public static List<Match> search(List<Season> seasons, Team team1, Team team2) {
+		Query query = HibernateUtil.createQuery("from Match where season_id=:sid " +
+				"and ((home_team_id=:tid1 and away_team_id=:tid2) or (home_team_id=:tid2 and away_team_id=:tid1))");
+		query.setParameter("sid", seasons.get(0).getId());
+		query.setParameter("tid1", team1.getId());
+		query.setParameter("tid2", team2.getId());
+		return HibernateUtil.queryMultipleResult(query);
+	}
+	
+	public static List<Match> search(Season season, Team team1, Team team2) {
+		List<Season> seasons = new Vector<Season>();
+		seasons.add(season);
+		return Match.search(seasons, team1, team2);
+	}
+}

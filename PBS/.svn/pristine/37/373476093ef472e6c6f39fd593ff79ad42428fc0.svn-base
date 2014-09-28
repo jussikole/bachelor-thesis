@@ -1,0 +1,28 @@
+package com.pbs.sport;
+
+import javax.persistence.Column;
+
+public class Team extends SportItem {
+	private String name;
+	private String abbreviation;
+	
+	public Team() {
+		
+	}
+	
+	@Column(name="name", unique=true, nullable=false)
+	public String getName() {
+		return this.name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@Column(name="abbreviation", unique=true, nullable=false)
+	public String getAbbreviation() {
+		return this.abbreviation;
+	}
+	public void setAbbreviation(String abbreviation) {
+		this.abbreviation = abbreviation;
+	}
+}

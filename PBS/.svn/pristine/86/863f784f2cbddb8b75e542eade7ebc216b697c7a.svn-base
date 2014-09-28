@@ -1,0 +1,63 @@
+package com.pbs.sport;
+
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+
+import com.pbs.sql.EmptyResultException;
+import com.pbs.sql.HibernateUtil;
+
+
+@Entity
+@Table(name="season")
+public class Season {
+	private int id;
+	private League league;
+	private int year;
+	
+	public Season() {
+		
+	}
+	
+	@Id
+	@GeneratedValue
+	public int getId() {
+		return this.id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	@ManyToOne
+	@JoinColumn(name="league_id", nullable=false)
+	public League getLeague() {
+		return this.league;
+	}
+	public void setLeague(League league) {
+		this.league = league;
+	}
+	
+	@Column(name="year", nullable=false)
+	public int getYear() {
+		return this.year;
+	}
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	
+	public static Season search(League league, int year) throws EmptyResultException {
+		Query query = HibernateUtil.createQuery("from Season where league_id = :lid and year = :year");
+		query.setParameter("lid", league.getId());
+		query.setParameter("year", year);
+		return (Season) HibernateUtil.querySingleResult(query);
+	}
+}

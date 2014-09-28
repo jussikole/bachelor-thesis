@@ -1,0 +1,16 @@
+<ivy-module version="2.0">
+	<info organisation="jussi" module="PBS-ivy" />
+	<dependencies>
+		<dependency org="org.hibernate" name="hibernate-core" rev="3.5.4-Final">	
+			<exclude module="jboss-jacc-api_JDK4" />
+		</dependency>
+		<dependency org="org.hibernate" name="hibernate-annotations" rev="3.5.6-Final">
+			<exclude module="jboss-jacc-api_JDK4" />
+		</dependency>
+		<dependency org="log4j" name="log4j" rev="1.2.16" />
+		<dependency org="mysql" name="mysql-connector-java" rev="5.1.19" />
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.4"/>
+		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.4"/>
+		<dependency org="org.hibernate" name="hibernate-validator" rev="4.3.0.Final"/>
+	</dependencies>
+</ivy-module>
